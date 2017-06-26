@@ -1,0 +1,8 @@
+# NOTE: this just sets the expected conf structure; actual data is fed in from
+# env vars (typically via a .env file)
+twitter:
+  consumer_key: twitter-app-consumer-key
+  consumer_secret: twitter-app-consumer-secret-key
+  access_token: twitter-user-oauth-access-token
+  access_secret: twitter-user-oauth-access-secret-key
+  follow_id: target-twitter-user-numeric-id
