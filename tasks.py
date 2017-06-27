@@ -68,8 +68,10 @@ def handle_status(api, status):
     # do what we think!
     if not status.is_quote_status:
         logger.debug("Got non-quote tweet: {}".format(url))
+        return
     if status.source != expected_source:
         logger.debug("Got non-archillinks tweet: {}".format(url))
+        return
 
     # Archillinks statuses always contain a bunch of links + a link to the
     # quoted status.
