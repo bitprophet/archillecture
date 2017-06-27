@@ -53,7 +53,9 @@ url_template = "https://twitter.com/{}/status/{}"
 def handle_status(api, status):
     # Not worth configuring these, they are part of the logic
     expected_source = 'archillinks'
-    # TODO: we might want to actually include these after all?
+    # TODO: yea, let's include these in some fashion, hopefully in a way that
+    # doesn't magically turn it into a quote-tweet in most clients. Otherwise
+    # attribution to archillect itself is mostly lost.
     # TODO: it's unclear why sometimes it's a direct link (to the website
     # archive, which actually seems to have LESS info than archillinks itself)
     # and sometimes a link to the tweet.
