@@ -117,6 +117,9 @@ Quoted status media URL: {}
     # does appear to exist, per its issue #643
     our_status = api.update_status(
         media_ids=[upload.media_id],
+        # TODO: be nice to throw another newline+divider of some sort in here,
+        # so the final link isn't smashed into the image URL (which twitter
+        # appends at the end automatically). Emoji or something?
         status="\n".join(links),
     )
     logger.info("We tweeted: {}".format(
