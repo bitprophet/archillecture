@@ -76,12 +76,14 @@ def handle_status(api, status):
         return
 
     # Archillinks statuses always contain a bunch of links + a link to the
-    # quoted status.
-    links = [
+    # quoted status. There are often duplicates so we dedupe.
+    # TODO: there are also often semi-dupes to the same site, slightly
+    # different page; probably nice to trim those too?
+    links = list(set([
         x['expanded_url']
         for x in status.entities['urls']
         if not x['expanded_url'].startswith(skippable_url_prefixes)
-    ]
+    ]))
     # Archillect posts are always a single photo/media item.
     quote = status.quoted_status
     media = quote['entities']['media'][0]
