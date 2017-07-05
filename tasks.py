@@ -84,9 +84,24 @@ def handle_status(api, status):
         for x in status.entities['urls']
         if not x['expanded_url'].startswith(skippable_url_prefixes)
     ]))
-    # Archillect posts are always a single photo/media item.
+    # Archillect posts are always a single photo/video item. Typically these
+    # always show up as both 'entities' and 'extended_entities'; but only the
+    # latter has the link to full video clips, the former (and the body of the
+    # latter) is only the thumbnail.
+    # So we have to be smart and seek out actual video links sometimes.
     quote = status.quoted_status
-    media = quote['entities']['media'][0]
+    media = quote['extended_entities']['media'][0]
+    # The 'media url' is, for photos, the actual direct media (not the HTML
+    # page Twitter likes to show humans).
+    media_url = media['media_url']
+    # But for videos, it is only the thumbnail, and we need to examine the
+    # 'video info -> variants' path instead.
+    if 'video_info' in media:
+        # NOTE: So far I've only seen single-variant posts, it's obviously
+        # possible for there to be >1...guess we'll see.
+        # TODO: run off my own tweepy fork that merges
+        # https://github.com/tweepy/tweepy/pull/655
+        media_url = media['video_info']['variants'][0]['url']
 
     # Debuggery
     blurb = """
@@ -97,15 +112,13 @@ Quoted status media URL: {}
     formatted = blurb.strip().format(
         url_template.format(quote['user']['screen_name'], quote['id']),
         links,
-        media['media_url'],
+        media_url,
     )
     logger.info("Got apparently-retweetable status: {}".format(url))
     logger.debug("Details:\n{}".format(formatted))
 
-    # Grab the media from its direct-to-the-media URL (not any display URLs as
-    # those go to HTML pages), as we have to re-upload it, cannot just reuse
-    # the media_id (aww.)
-    response = requests.get(media['media_url'])
+    # Media download/upload
+    response = requests.get(media_url)
     media_file = BytesIO(response.content)
     # This feels gross but don't see anything obviously better offhand
     filename = os.path.basename(response.url)
