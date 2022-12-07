@@ -4,13 +4,26 @@
 #
 #    pip-compile --no-index --output-file requirements.txt requirements.in
 #
-certifi==2017.4.17        # via requests
-chardet==3.0.4            # via requests
-idna==2.5                 # via requests
+certifi==2022.12.7
+    # via requests
+chardet==3.0.4
+    # via requests
+idna==2.5
+    # via requests
 invoke==0.19.0
-oauthlib==2.0.2           # via requests-oauthlib
-requests-oauthlib==0.8.0  # via tweepy
+    # via -r requirements.in
+oauthlib==2.0.2
+    # via requests-oauthlib
 requests==2.18.1
-six==1.10.0               # via tweepy
+    # via
+    #   -r requirements.in
+    #   requests-oauthlib
+    #   tweepy
+requests-oauthlib==0.8.0
+    # via tweepy
+six==1.10.0
+    # via tweepy
 tweepy==3.5.0
-urllib3==1.21.1           # via requests
+    # via -r requirements.in
+urllib3==1.21.1
+    # via requests
